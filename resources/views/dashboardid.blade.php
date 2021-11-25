@@ -59,9 +59,12 @@
                         </tbody>
                     </table>
                     <h2>Texto Inicial</h2>
+                    <br>
                     <div>{{$product->textoIni}}</div>
+                    <hr>
                     <h2>Test {{$product->nombre}}</h2>
-                    <div>{{$product->textoRedaccion}}</div>
+                    <br>
+                    <div><pre>{{$product->textoRedaccion}}</pre></div>
 
                 </div>
             </div>

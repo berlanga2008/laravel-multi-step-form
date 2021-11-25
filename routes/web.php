@@ -73,6 +73,11 @@ Route::get('/view-clear', function () {
 //Clear Config cache:
 Route::get('/config-cache', function () {
     $exitCode = Artisan::call('config:cache');
+    return '<h1>cache Config </h1>';
+});
+
+Route::get('/config-clear', function () {
+    $exitCode = Artisan::call('config:clear');
     return '<h1>Clear Config cleared</h1>';
 });
 
