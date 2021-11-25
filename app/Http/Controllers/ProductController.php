@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Product;
+use Illuminate\Http\Request;
+use App\Textos;
 
 class ProductController extends Controller
 {
-	/**
+    /**
      * Display a listing of the prducts.
      *
      * @return \Illuminate\Http\Response
@@ -16,7 +17,14 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return view('products.index',compact('products'));
+        return view('products.index', compact('products'));
+    }
+
+    public function thankyou()
+    {
+        /* $products = Product::all();*/
+
+        return view('thankyou');
     }
 
     /**
@@ -28,7 +36,7 @@ class ProductController extends Controller
     {
         $product = $request->session()->get('product');
 
-        return view('products.create-step-one',compact('product'));
+        return view('products.create-step-one', compact('product'));
     }
 
     /**
@@ -39,21 +47,28 @@ class ProductController extends Controller
      */
     public function postCreateStepOne(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|unique:products',
-            'amount' => 'required|numeric',
+        /*    $validatedData = $request->validate([
+            'nombre' => 'required|unique:products',
+            'email' => 'required|numeric',
             'description' => 'required',
+        ]);*/
+        $validatedData = $request->validate([
+            'nombre' => 'required|string',
+            'email' => 'required|email|max:49',
+            'telefono' => 'required|string|min:5|max:49',
+            'pais' => 'required',
         ]);
 
-        if(empty($request->session()->get('product'))){
+        if (empty($request->session()->get('product'))) {
             $product = new Product();
             $product->fill($validatedData);
             $request->session()->put('product', $product);
-        }else{
+        } else {
             $product = $request->session()->get('product');
             $product->fill($validatedData);
             $request->session()->put('product', $product);
         }
+
 
         return redirect()->route('products.create.step.two');
     }
@@ -67,7 +82,7 @@ class ProductController extends Controller
     {
         $product = $request->session()->get('product');
 
-        return view('products.create-step-two',compact('product'));
+        return view('products.create-step-two', compact('product'));
     }
 
     /**
@@ -77,14 +92,19 @@ class ProductController extends Controller
      */
     public function postCreateStepTwo(Request $request)
     {
-    	$validatedData = $request->validate([
-            'stock' => 'required',
-            'status' => 'required',
-        ]);
+
+
 
         $product = $request->session()->get('product');
-        $product->fill($validatedData);
+        $texto = Textos::inRandomOrder()->limit(1)->get();
+        foreach ($texto as $key) {
+            $product->textoIni = $key->texto;
+        }
         $request->session()->put('product', $product);
+
+        /*  $product->textoIni = 'asdf';*/
+
+        $product->save();
 
         return redirect()->route('products.create.step.three');
     }
@@ -96,9 +116,12 @@ class ProductController extends Controller
      */
     public function createStepThree(Request $request)
     {
-        $product = $request->session()->get('product');
 
-        return view('products.create-step-three',compact('product'));
+
+
+
+        $product = $request->session()->get('product');
+        return view('products.create-step-three', compact('product'));
     }
 
     /**
@@ -108,11 +131,19 @@ class ProductController extends Controller
      */
     public function postCreateStepThree(Request $request)
     {
-    	$product = $request->session()->get('product');
+
+
+        $product = $request->session()->get('product');
+        $request->session()->put('product', $product);
+        print_r($product);
+        $product->textoRedaccion = $request->input('textoRedaccion');
+
         $product->save();
 
         $request->session()->forget('product');
-
+        /*
         return redirect()->route('products.index');
+        */
+        return redirect()->route('thankyou');
     }
 }

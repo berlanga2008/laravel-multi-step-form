@@ -1,3 +1,4 @@
+@include('common.head')
 @extends('layout.default')
 
 @section('content')
@@ -8,7 +9,7 @@
                 @csrf
 
                 <div class="card">
-                    <div class="card-header">Step 1: Basic Info</div>
+                    <div class="card-header"><h2>Introduce tus datos</h2></div>
 
                     <div class="card-body">
 
@@ -21,27 +22,30 @@
                                     </ul>
                                 </div>
                             @endif
+                            <div class="form-group">
 
-                            <div class="form-group">
-                                <label for="title">Product Name:</label>
-                                <input type="text" value="{{ $product->name ?? '' }}" class="form-control" id="taskTitle"  name="name">
+                                <input type="text" value="{{ $product->nombre ?? '' }}" class="form-control" id="nombre"  name="nombre" placeholder="Nombre"/>
                             </div>
                             <div class="form-group">
-                                <label for="description">Product Amount:</label>
-                                <input type="text"  value="{{{ $product->amount ?? '' }}}" class="form-control" id="productAmount" name="amount"/>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Product Description:</label>
-                                <textarea type="text"  class="form-control" id="taskDescription" name="description">{{{ $product->description ?? '' }}}</textarea>
-                            </div>
 
-                        
+                                <input type="email"  value="{{{ $product->email ?? '' }}}" class="form-control" id="email" name="email" placeholder="Email"/>
+                            </div>
+                            <div class="form-group">
+
+                                <input type="text"  value="{{{ $product->telefono ?? '' }}}" class="form-control" id="telefono" name="telefono" placeholder="Teléfono"/>
+                            </div>
+                            <div class="form-group">
+
+                                <input type="text"  value="{{{ $product->pais ?? '' }}}" class="form-control" id="pais" name="pais" placeholder="Pais"/>
+                            </div>
                     </div>
 
                     <div class="card-footer text-right">
-                        <button type="submit" class="btn btn-primary">Next</button>
+                        <button type="submit" class="btn btn-primary">Ir a la prueba de letrista</button>
                     </div>
                 </div>
+
+
             </form>
         </div>
     </div>

@@ -7,40 +7,45 @@
             <form action="{{ route('products.create.step.three.post') }}" method="post" >
                 {{ csrf_field() }}
                 <div class="card">
-                    <div class="card-header">Step 3: Review Details</div>
+                    <div class="card-header"><h2>Rellena la prueba</h2></div>
 
                     <div class="card-body">
 
-                            <table class="table">
-                                <tr>
-                                    <td>Product Name:</td>
-                                    <td><strong>{{$product->name}}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>Product Amount:</td>
-                                    <td><strong>{{$product->amount}}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>Product status:</td>
-                                    <td><strong>{{$product->status ? 'Active' : 'DeActive'}}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>Product Description:</td>
-                                    <td><strong>{{$product->description}}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td>Product Stock:</td>
-                                    <td><strong>{{$product->stock}}</strong></td>
-                                </tr>
-                            </table>
+
+                        {{$product->textoIni}}
+
+                    <hr>
+                    <textarea class="form-control" rows="13" style="min-width: 100%" id="textoRedaccion" name="textoRedaccion"></textarea>
                     </div>
                     <div class="card-footer">
                         <div class="row">
-                            <div class="col-md-6 text-left">
-                                <a href="{{ route('products.create.step.two') }}" class="btn btn-danger pull-right">Previous</a>
+                            <div class="col-md-4 text-left">
+                                <a href="#" class="btn btn-danger pull-right">Tiempo <span id="countdown" class="timer"></span></a>
+
                             </div>
-                            <div class="col-md-6 text-right">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                            <script>
+                               var seconds = 7200;
+                               function secondPassed() {
+                               var minutes = Math.round((seconds - 30)/60);
+                               var remainingSeconds = seconds % 60;
+                               if (remainingSeconds < 10) {
+                                  remainingSeconds = "0" + remainingSeconds;
+                               }
+                               document.getElementById('countdown').innerHTML = minutes + ":" + remainingSeconds;
+                               if (seconds == 0) {
+                                clearInterval(countdownTimer);
+                                document.getElementById('countdown').innerHTML = "Buzz Buzz";
+                               } else {
+                                seconds--;
+                               }
+                               }
+                               var countdownTimer = setInterval('secondPassed()', 1000);
+                            </script>
+                            <div class="col-md-4 text-right">
+                                <button type="submit" class="btn btn-primary" disabled>Repetir</button>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <button type="submit" class="btn btn-primary">Enviar Texto</button>
                             </div>
                         </div>
                     </div>
